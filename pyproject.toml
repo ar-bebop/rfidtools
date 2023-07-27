@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "rfidtools"
+version = "0.1.3"
+description = ""
+authors = ["ax-ribeiro <aribeir4@uwo.ca>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyodbc = "^4.0.39"
+fabric = "^3.1.0"
+requests = "^2.31.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
