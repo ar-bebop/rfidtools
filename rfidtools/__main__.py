@@ -13,18 +13,14 @@ parser = argparse.ArgumentParser(
     epilog='Use "python -m rfidtools" to run from the command line.')
 
 parser.add_argument('-b', '--build-exe',
+                    nargs=1,
                     required=False,
-                    action='store_true',
                     help='Build the program into an exe to be placed on the desktop')
-
-parser.add_argument('config',
-                    help='Path to config.yaml for building .exe')
 
 args = vars(parser.parse_args())
 BUILD = args['build_exe']
-CONFIG_PATH = args['config']
 
-if not BUILD:
+if BUILD is None:
     gui_loop()
 
 else:
@@ -34,7 +30,7 @@ else:
             f'{PATH}\\__main__.py',
             '-F',
             f'--distpath={desktop}',
-            f'--add-data={CONFIG_PATH};rfidtools',
+            f'--add-data={BUILD};rfidtools',
             '-n RFID_Tools',
             '--windowed',
             f'--icon={PATH}\\RFID_Icon.ico'])
