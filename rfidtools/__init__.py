@@ -1,4 +1,4 @@
-from pathlib import Path
+from os import path
 
 import yaml
 
@@ -14,7 +14,7 @@ global SSH_PASS
 global SSH_LOGS_PATH
 global SSH_ARCHIVES_PATH
 
-config_path = Path(__file__).parent.joinpath('config.yaml')
+config_path = path.abspath(path.join(path.dirname(__file__), 'config.yaml'))
 with open(config_path) as config_file:
     config = yaml.load(config_file, Loader=yaml.Loader)
 

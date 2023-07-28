@@ -5,6 +5,7 @@ import PyInstaller.__main__ as build
 
 from rfidtools.core import gui_loop
 
+PATH = os.path.dirname(os.path.realpath(__file__))
 
 parser = argparse.ArgumentParser(
     prog='rfidtools',
@@ -24,15 +25,16 @@ if not BUILD:
 
 else:
     if platform.system() == 'Windows':
-        desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+        desktop = os.environ['USERPROFILE'] + '\\Desktop'
         build.run([
-            '__main__.py',
-            f'--distpath {desktop}',
-            '--onefile',
-            '--name RFID_Tools',
-            '--add-data config.yaml',
+            f'{PATH}\\__main__.py',
+            '-F',
+            f'--distpath={desktop}',
+            f'--add-data={PATH}\\config.yaml;rfidtools',
+            '-n RFID_Tools',
             '--windowed',
-            '--icon RFID_Icon.ico'])
+            f'--icon={PATH}\\RFID_Icon.ico'])
+
     else:
         print('Building to .exe is only supported on Windows.')
         raise SystemError
