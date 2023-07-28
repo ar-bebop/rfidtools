@@ -1,10 +1,11 @@
 import re
 import csv
-import webbrowser
 from datetime import datetime
 
 import pyodbc as db
 from fabric import Connection
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 PRINT_LOGS_PATH = 'C:\\Print_Logs\\'
 PRINT_ARCHIVES_PATH = 'C:\\Print_Archives\\'
@@ -28,9 +29,15 @@ def listlogs(type) -> list:
     return [log for log in logs if re.search(f'^{type}_[0-9]*.txt', log) or re.search(f'^{type}_nf_[0-9]*.txt', log)]
 
 
-def rmlog(log):
-    with Connection(**ssh_kwargs) as c, c.sftp() as sftp:
-        sftp.remove(PRINT_LOGS_PATH + log)
+def rmlog(log) -> bool:
+    try:
+        with Connection(**ssh_kwargs) as c, c.sftp() as sftp:
+            sftp.remove(PRINT_LOGS_PATH + log)
+        return True
+
+    except Exception as e:
+        print('File may not be found, or connection is bad.\n' + str(e))
+        return False
 
 
 def parse_log(type, log, bin) -> list[tuple]:
@@ -88,8 +95,6 @@ def send_print(type, payload) -> bool:
             url += f'{key}={value}&'
         url = url[:-1]
 
-        webbrowser.open(url)
-
     elif type == 'slabs':
         url = 'http://192.168.2.67:8080/bartender/print/rfid_templates/slabs_nf.btw?'
         for key, value in payload.items():
@@ -99,12 +104,21 @@ def send_print(type, payload) -> bool:
             url += f'{key}={value}&'
         url = url[:-1]
 
-        webbrowser.open(url)
-
     else:
         print('Something went very wrong.\nInvalid type argument, object has impossible name.')
         raise TypeError
         return False
+
+    opts = Options()
+    opts.add_argument('--headless')
+    driver = webdriver.Chrome(options=opts)
+    try:
+        driver.get(url)
+
+    except Exception as e:
+        print('Something went wrong with the browser automation.\nMaybe chrome isn\'t installed?\n' + str(e))
+        return False
+    driver.close()
 
     return True
 

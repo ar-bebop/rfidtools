@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
-from . import utils
+from rfidtools.labels import utils
 
 
 class Print(ttk.LabelFrame):

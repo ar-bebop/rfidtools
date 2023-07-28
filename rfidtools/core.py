@@ -1,7 +1,8 @@
-from rfidtools.labels import add
-from rfidtools.labels import print
 import tkinter as tk
 from tkinter import ttk
+
+from rfidtools.labels import add
+from rfidtools.labels import print
 
 
 class Mainframe(ttk.Frame):

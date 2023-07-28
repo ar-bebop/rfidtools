@@ -2,8 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
-
-from . import utils
+from rfidtools.labels import utils
 
 
 class Add(ttk.LabelFrame):
@@ -45,15 +44,26 @@ class Add(ttk.LabelFrame):
 
         ttk.Button(self,
                    text='Remove Log',
-                   command=lambda: utils.rmlog(self.logs[self.logsListBox.curselection()[0]])
+                   command=lambda: self.remove_log()
                    ).grid(row=3, column=0, pady=5)
 
         ttk.Button(self,
                    text='Add Labels',
-                   command=lambda: self.add_labels(self.logs[self.logsListBox.curselection()[0]])
+                   command=lambda: self.add_labels
                    ).grid(row=3, column=1, pady=5)
 
-    def add_labels(self, log, query) -> None:
+    def remove_log(self) -> None:
+        log = self.logs[self.logsListBox.curselection()[0]]
+
+        if messagebox.askyesno(message=f'You are about to delete\n{log}\nAre you sure?'):
+            if utils.rmlog(log):
+                messagebox.showwarning('Deletion', 'The selected log was deleted.')
+                self._update_logs()
+            else:
+                messagebox.showerror('Error', 'Something went wrong, log could not be removed.')
+
+    def add_labels(self, query) -> None:
+        log = self.logs[self.logsListBox.curselection()[0]]
         bin = self.bin.get() if self.useBin.get() else None
 
         data = utils.parse_log(self.type, log, bin)
@@ -81,13 +91,13 @@ class Porcelain(Add):
     def draw(self) -> None:
         super().draw()
 
-    def add_labels(self, log) -> None:
+    def add_labels(self) -> None:
         INSERT_QUERY = """\
                 INSERT INTO porcelain_stock(ProductTagID, WarehouseCode, Status, ReceivedDateTimeStamp, CreatedBy, Bin, ProductTagName, ProductCode)
                 VALUES(?, ?, ?, ?, ?, ?, ?, ?)\
                 """
 
-        super().add_labels(log, INSERT_QUERY)
+        super().add_labels(INSERT_QUERY)
 
 
 class Slabs(Add):
@@ -97,10 +107,10 @@ class Slabs(Add):
     def draw(self) -> None:
         super().draw()
 
-    def add_labels(self, log) -> None:
+    def add_labels(self) -> None:
         INSERT_QUERY = """\
                 INSERT INTO Stock(Barcode, TagID, ProductCode, BlockNumber, SlabNumber, Length, Width, WarehouseCode, LocationCode, StatusID, ReceivedDateTimeStamp)
                 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\
                 """
 
-        super().add_labels(log, INSERT_QUERY)
+        super().add_labels(INSERT_QUERY)
