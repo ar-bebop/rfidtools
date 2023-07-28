@@ -18,13 +18,13 @@ config_path = Path(__file__).parent.joinpath('config.yaml')
 with open(config_path) as config_file:
     config = yaml.load(config_file, Loader=yaml.Loader)
 
-    DB_SERVER = config['DB']['server']
-    DB_TABLE = config['DB']['table']
-    DB_USER = config['DB']['user']
-    DB_PASS = config['DB']['pass']
+    DB_SERVER = config['db']['server']
+    DB_TABLE = config['db']['table']
+    DB_USER = config['db']['user']
+    DB_PASS = config['db']['pass']
 
-    SSH_SERVER = config['SSH']['server']
-    SSH_USER = config['SSH']['user']
-    SSH_PASS = config['SSH']['pass']
-    SSH_LOGS_PATH = config['SSH']['logs-path']
-    SSH_ARCHIVES_PATH = config['SSH']['archives-path']
+    SSH_SERVER = config['ssh']['server']
+    SSH_USER = config['ssh']['user']
+    SSH_PASS = config['ssh']['pass']
+    SSH_LOGS_PATH = config['ssh']['logs-path']
+    SSH_ARCHIVES_PATH = config['ssh']['archives-path']
