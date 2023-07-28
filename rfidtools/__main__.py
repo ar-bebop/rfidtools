@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument('-b', '--build-exe',
                     nargs=1,
                     required=False,
-                    help='Build the program into an exe to be placed on the desktop')
+                    help='Build the program into an exe to be placed on the desktop.\nRequires an argument passing the relative path to a config.yaml')
 
 args = vars(parser.parse_args())
 BUILD = args['build_exe']
@@ -30,7 +30,7 @@ else:
             f'{PATH}\\__main__.py',
             '-F',
             f'--distpath={desktop}',
-            f'--add-data={BUILD};rfidtools',
+            f'--add-data={BUILD[0]};rfidtools',
             '-n RFID_Tools',
             '--windowed',
             f'--icon={PATH}\\RFID_Icon.ico'])
