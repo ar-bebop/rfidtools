@@ -92,7 +92,7 @@ class Window(tk.Tk):
         self['menu'] = self.menubar
 
 
-def main():
+def gui_loop():
     win = Window()
 
     win.mainloop()

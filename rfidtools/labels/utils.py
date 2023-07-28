@@ -15,7 +15,6 @@ PRINT_ARCHIVES_PATH = SSH_ARCHIVES_PATH
 
 # SQL connection
 sql_connection = f'Driver={{ODBC Driver 18 for SQL Server}};Server={DB_SERVER};Database={DB_TABLE};UID={DB_USER};PWD={DB_PASS};Encrypt=no'
-print(sql_connection)
 
 # SSH connection
 ssh_kwargs = {'host': SSH_SERVER, 'user': SSH_USER, 'connect_timeout': 10, 'connect_kwargs': {'password': SSH_PASS}}
