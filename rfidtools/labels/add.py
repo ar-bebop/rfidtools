@@ -16,23 +16,36 @@ class Add(ttk.LabelFrame):
         self.logs = utils.listlogs(self.type)
         self.logChoices.set(self.logs)
 
+    def _get_selected_log(self) -> str or None:
+        try:
+            log = self.logs[self.logsListBox.curselection()[0]]
+
+        except IndexError:
+            messagebox.showerror('Error', 'No log is selected.')
+            return None
+
+        return log
+
     def draw(self):
         self.grid(row=0, column=0, sticky='nsew')
         self.rowconfigure(0, weight=1)
-        self.rowconfigure(1, weight=0)
-        self.rowconfigure(2, weight=1)
-        self.rowconfigure(3, weight=0)
+        self.rowconfigure(1, weight=1)
+        self.rowconfigure(2, weight=0)
+        self.rowconfigure(3, weight=1)
+        self.rowconfigure(4, weight=0)
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
 
         self.logChoices = tk.StringVar(value=self.logs)
         self.logsListBox = tk.Listbox(self, listvariable=self.logChoices, selectmode='single')
-        self.logsListBox.grid(row=0, column=0, rowspan=3, sticky='nsew')
+        self.logsListBox.grid(row=0, column=0, rowspan=4, sticky='nsew')
 
-        ttk.Label(self, text='Bin:').grid(row=0, column=1, sticky='s')
+        ttk.Button(self, text='View Log', command=self.view_log).grid(row=0, column=1)
+
+        ttk.Label(self, text='Bin:').grid(row=1, column=1, sticky='s')
         self.bin = tk.StringVar()
         self.binEntry = ttk.Entry(self, textvariable=self.bin, state=tk.DISABLED)
-        self.binEntry.grid(row=1, column=1)
+        self.binEntry.grid(row=2, column=1)
         self.useBin = tk.BooleanVar(value=False)
         ttk.Checkbutton(self,
                         text='Use bin?',
@@ -40,20 +53,44 @@ class Add(ttk.LabelFrame):
                         variable=self.useBin,
                         onvalue=True,
                         offvalue=False
-                        ).grid(row=2, column=1, sticky='n')
+                        ).grid(row=3, column=1, sticky='n')
 
         ttk.Button(self,
                    text='Remove Log',
                    command=lambda: self.remove_log()
-                   ).grid(row=3, column=0, pady=5)
+                   ).grid(row=4, column=0, pady=5)
 
         ttk.Button(self,
                    text='Add Labels',
                    command=lambda: self.add_labels
-                   ).grid(row=3, column=1, pady=5)
+                   ).grid(row=4, column=1, pady=5)
+
+    def view_log(self) -> None:
+        log = self._get_selected_log()
+        if log is None:
+            return
+
+        view = tk.Toplevel()
+        view.title('Viewing: ' + log)
+        if view.tk.call('tk', 'windowingsystem') == 'x11':
+            view.attributes('-type', 'utility')
+
+        data = utils.read_log(log)
+
+        ttk.Button(view, text='Close', command=view.destroy).grid(row=len(data), column=len(data[0]) // 2 - 1, columnspan=2, stick='ew')
+
+        for i, colname in enumerate(data[0]):
+            ttk.Label(view, text=colname).grid(row=0, column=i, padx=50)
+        data = data[1:]
+
+        for i, row in enumerate(data):
+            for j, col in enumerate(row):
+                ttk.Label(view, text=col).grid(row=i + 1, column=j)
 
     def remove_log(self) -> None:
-        log = self.logs[self.logsListBox.curselection()[0]]
+        log = self._get_selected_log()
+        if log is None:
+            return
 
         if messagebox.askyesno(message=f'You are about to delete\n{log}\nAre you sure?'):
             if utils.rmlog(log):
@@ -63,7 +100,10 @@ class Add(ttk.LabelFrame):
                 messagebox.showerror('Error', 'Something went wrong, log could not be removed.')
 
     def add_labels(self, query) -> None:
-        log = self.logs[self.logsListBox.curselection()[0]]
+        log = self._get_selected_log()
+        if log is None:
+            return
+
         bin = self.bin.get() if self.useBin.get() else None
 
         data = utils.parse_log(self.type, log, bin)

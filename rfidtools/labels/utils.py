@@ -88,6 +88,16 @@ def parse_log(type, log, bin) -> list[tuple]:
     return data
 
 
+def read_log(log) -> list:
+    with Connection(**ssh_kwargs) as c, c.sftp() as sftp:
+        with sftp.open(PRINT_LOGS_PATH + log, mode='r') as csvfile:
+            csvfile.prefetch()
+            reader = csv.reader(csvfile)
+            data = list(reader)
+
+    return data
+
+
 def send_print(type, payload) -> bool:
     if type == 'porcelain':
         url = 'http://192.168.2.67:8080/bartender/print/rfid_templates/porcelain_nf.btw?'
