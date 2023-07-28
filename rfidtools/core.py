@@ -16,12 +16,15 @@ class Mainframe(ttk.Frame):
     def main_menu(self):
         self.clear()
 
-        frame = ttk.LabelFrame(self, text='Menu')
-        frame.grid(row=0, column=0)
-        ttk.Button(frame, text='Add Porcelain Labels', command=self.add_porcelain).grid(row=0, column=0)
-        ttk.Button(frame, text='Add Slab Labels', command=self.add_slabs).grid(row=1, column=0)
-        ttk.Button(frame, text='Print Porcelain Labels', command=self.print_porcelain).grid(row=2, column=0)
-        ttk.Button(frame, text='Print Slab Labels', command=self.print_slabs).grid(row=3, column=0)
+        add_frame = ttk.LabelFrame(self, text='Add')
+        add_frame.grid(row=0, column=0, pady=80)
+        ttk.Button(add_frame, text='Add Porcelain Labels', command=self.add_porcelain).grid(row=0, column=0)
+        ttk.Button(add_frame, text='Add Slab Labels', command=self.add_slabs).grid(row=1, column=0)
+
+        print_frame = ttk.LabelFrame(self, text='Print')
+        print_frame.grid(row=1, column=0, pady=80)
+        ttk.Button(print_frame, text='Print Porcelain Labels', command=self.print_porcelain).grid(row=2, column=0)
+        ttk.Button(print_frame, text='Print Slab Labels', command=self.print_slabs).grid(row=3, column=0)
 
     def print_porcelain(self):
         self.clear()
@@ -74,10 +77,7 @@ class Window(tk.Tk):
     def _menu_bar(self):
         self.menubar = tk.Menu(self)
 
-        filemenu = tk.Menu(self.menubar, tearoff=False)
-        filemenu.add_command(label='Main Menu', command=self.mainframe.main_menu)
-        filemenu.add_command(label='TODO', state='disabled')
-        self.menubar.add_cascade(menu=filemenu, label='File')
+        self.menubar.add_command(label='Menu', command=self.mainframe.main_menu)
 
         addmenu = tk.Menu(self.menubar, tearoff=False)
         addmenu.add_command(label='Porcelain', command=self.mainframe.add_porcelain)
