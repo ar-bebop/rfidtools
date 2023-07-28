@@ -55,15 +55,9 @@ class Add(ttk.LabelFrame):
                         offvalue=False
                         ).grid(row=3, column=1, sticky='n')
 
-        ttk.Button(self,
-                   text='Remove Log',
-                   command=lambda: self.remove_log()
-                   ).grid(row=4, column=0, pady=5)
+        ttk.Button(self, text='Remove Log', command=self.remove_log).grid(row=4, column=0, pady=5)
 
-        ttk.Button(self,
-                   text='Add Labels',
-                   command=lambda: self.add_labels
-                   ).grid(row=4, column=1, pady=5)
+        ttk.Button(self, text='Add Labels', command=self.add_labels).grid(row=4, column=1, pady=5)
 
     def view_log(self) -> None:
         log = self._get_selected_log()
