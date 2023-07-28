@@ -79,7 +79,7 @@ class Add(ttk.LabelFrame):
                 messagebox.showerror('Error', 'Archival error.')
 
         else:
-            messagebox.showwarning('Error', 'Database error.')
+            messagebox.showerror('Error', 'Database error.\nIt\'s possible one of the labels is already in the database.\nOr there is a connection issue.')
 
         self._update_logs()
 

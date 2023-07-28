@@ -5,3 +5,7 @@ __pycache__/
 # Distribution / packaging
 build/
 dist/
+
+# Config
+*.yaml
+*.yml

@@ -40,7 +40,7 @@ class Print(ttk.LabelFrame):
             messagebox.showinfo('Success', 'Print job was sent successfully.')
 
         else:
-            messagebox.showwarning('Error', 'Error sending sending print job.')
+            messagebox.showerror('Error', 'Error sending sending print job.')
 
 
 class Porcelain(Print):

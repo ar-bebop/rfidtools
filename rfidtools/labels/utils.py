@@ -7,14 +7,17 @@ from fabric import Connection
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-PRINT_LOGS_PATH = 'C:\\Print_Logs\\'
-PRINT_ARCHIVES_PATH = 'C:\\Print_Archives\\'
+from rfidtools import DB_SERVER, DB_TABLE, DB_USER, DB_PASS
+from rfidtools import SSH_SERVER, SSH_USER, SSH_PASS, SSH_LOGS_PATH, SSH_ARCHIVES_PATH
+
+PRINT_LOGS_PATH = SSH_LOGS_PATH
+PRINT_ARCHIVES_PATH = SSH_ARCHIVES_PATH
 
 # SQL connection
-sql_connection = 'Driver={ODBC Driver 18 for SQL Server};Server=192.168.2.67;Database=DataWhseCiot;UID=SA;PWD=Passw0rd;Encrypt=no'
+sql_connection = f'Driver={{ODBC Driver 18 for SQL Server}};Server={DB_SERVER};Database={DB_TABLE};UID={DB_USER};PWD={DB_PASS}'
 
 # SSH connection
-ssh_kwargs = {'host': '192.168.2.67', 'user': 'RFIDAdmin', 'connect_timeout': 10, 'connect_kwargs': {'password': 'Passw0rd2987'}}
+ssh_kwargs = {'host': SSH_SERVER, 'user': SSH_USER, 'connect_timeout': 10, 'connect_kwargs': {'password': SSH_PASS}}
 
 
 def listlogs(type) -> list:
