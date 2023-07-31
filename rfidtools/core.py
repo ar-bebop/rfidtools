@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 
 from rfidtools.labels import add
-from rfidtools.labels import print
 
 
 class Mainframe(ttk.Frame):
@@ -20,21 +19,6 @@ class Mainframe(ttk.Frame):
         add_frame.grid(row=0, column=0, pady=80)
         ttk.Button(add_frame, text='Add Porcelain Labels', command=self.add_porcelain).grid(row=0, column=0)
         ttk.Button(add_frame, text='Add Slab Labels', command=self.add_slabs).grid(row=1, column=0)
-
-        print_frame = ttk.LabelFrame(self, text='Print')
-        print_frame.grid(row=1, column=0, pady=80)
-        ttk.Button(print_frame, text='Print Porcelain Labels', command=self.print_porcelain).grid(row=2, column=0)
-        ttk.Button(print_frame, text='Print Slab Labels', command=self.print_slabs).grid(row=3, column=0)
-
-    def print_porcelain(self):
-        self.clear()
-
-        print.Porcelain(self).draw()
-
-    def print_slabs(self):
-        self.clear()
-
-        print.Slabs(self).draw()
 
     def add_porcelain(self):
         self.clear()
@@ -84,11 +68,6 @@ class Window(tk.Tk):
         addmenu.add_command(label='Slabs', command=self.mainframe.add_slabs)
         self.menubar.add_cascade(menu=addmenu, label='Add')
 
-        printmenu = tk.Menu(self.menubar, tearoff=False)
-        printmenu.add_command(label='Porcelain', command=self.mainframe.print_porcelain)
-        printmenu.add_command(label='Slabs', command=self.mainframe.print_slabs)
-        self.menubar.add_cascade(menu=printmenu, label='Print')
-
         self['menu'] = self.menubar
 
 
@@ -96,3 +75,7 @@ def gui_loop():
     win = Window()
 
     win.mainloop()
+
+
+if __name__ == '__main__':
+    gui_loop()

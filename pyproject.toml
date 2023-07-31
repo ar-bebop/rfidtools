@@ -8,11 +8,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "~3.11"
 pyodbc = "^4.0.39"
-fabric = "^3.1.0"
 requests = "^2.31.0"
-selenium = "^4.10.0"
 pyyaml = "^6.0.1"
-pyinstaller = "^5.13.0"
 
 [build-system]
 requires = ["poetry-core"]
