@@ -31,7 +31,7 @@ else:
             '-F',
             f'--distpath={desktop}',
             f'--add-data={BUILD[0]};rfidtools',
-            '-n RFID_Tools',
+            '--name=RFID_Tools',
             '--windowed',
             f'--icon={PATH}\\RFID_Icon.ico'])
 
