@@ -11,11 +11,3 @@ db:
   table: SQL TABLE FOR RFID
   user: SQL SERVER LOGIN USER
   pass: SQL SERVER LOGIN PASSWORD
-
-# SSH connection configuration
-ssh:
-  server: SSH SERVER ADDRESS
-  user: SSH LOGIN USER
-  pass: SSH LOGIN PASSWORD
-  logs-path: PATH TO PRINT LOGS ON REMOTE SERVER
-  archives-path: PATH TO PRINT ARCHIVES ON REMOTE SERVER
