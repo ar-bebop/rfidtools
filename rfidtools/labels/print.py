@@ -5,6 +5,7 @@ from tkinter import messagebox
 from rfidtools.labels import utils
 
 
+# parent class for printing labels
 class Print(ttk.LabelFrame):
     def __init__(self, parent, text):
         self.parent = parent
@@ -16,7 +17,9 @@ class Print(ttk.LabelFrame):
         self.serial = tk.IntVar(value=1)
         self.serial_numbers = tk.IntVar(value=1)
 
-    def draw(self):
+    def draw(self) -> None:
+        # main draw, init all widgets, row/col config
+
         self.grid(row=0, column=0, columnspan=6, sticky='nsew')
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
@@ -35,7 +38,7 @@ class Print(ttk.LabelFrame):
 
         ttk.Button(self.parent, text='Print', command=self.print_labels).grid(row=1, column=4, padx=20, pady=5)
 
-    def print_labels(self, payload):
+    def print_labels(self, payload) -> None:
         if utils.send_print(self.type, payload):
             messagebox.showinfo('Success', 'Print job was sent successfully.')
 
@@ -43,6 +46,7 @@ class Print(ttk.LabelFrame):
             messagebox.showerror('Error', 'Error sending sending print job.')
 
 
+# child for porcelain prints
 class Porcelain(Print):
     def __init__(self, parent) -> None:
         super().__init__(parent, 'Porcelain: Print Labels')
@@ -52,6 +56,7 @@ class Porcelain(Print):
         self.thickness = tk.IntVar()
 
     def print_labels(self):
+        # print labels with porcelain specific payload
         payload = {'Task': 'Print',
                    'Printer': 'SATO CL4NX Plus 203dpi',
                    'code': self.code.get(),
@@ -63,6 +68,7 @@ class Porcelain(Print):
         super().print_labels(payload)
 
     def draw(self) -> None:
+        # draw porcelain specific widgets
         super().draw()
 
         ttk.Label(self, text='Product Code:').grid(row=0, column=0, columnspan=2, sticky='s')
@@ -75,6 +81,7 @@ class Porcelain(Print):
         ttk.Entry(self, textvariable=self.thickness, width=2).grid(row=5, column=0, columnspan=2, sticky='n')
 
 
+# child for slab prints
 class Slabs(Print):
     def __init__(self, parent) -> None:
         super().__init__(parent, 'Slabs: Print Labels')
@@ -85,7 +92,8 @@ class Slabs(Print):
         self.dim_y = tk.IntVar()
         self.lot = tk.StringVar()
 
-    def print_labels(self):
+    def print_labels(self) -> None:
+        # print labels with slab specific payload
         payload = {'Task': 'Print',
                    'Printer': 'SATO CL6NX Plus 203dpi',
                    'code': self.code.get(),
@@ -99,6 +107,7 @@ class Slabs(Print):
         super().print_labels(payload)
 
     def draw(self) -> None:
+        # draw slab specific widgets
         super().draw()
 
         ttk.Label(self, text='Product Code:').grid(row=0, column=0, columnspan=2, sticky='s')

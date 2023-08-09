@@ -14,6 +14,8 @@ global SSH_PASS
 global SSH_LOGS_PATH
 global SSH_ARCHIVES_PATH
 
+# initialize all config variables from config.yaml
+# no DB or server connection can be made unless a config is provided in the root directory as shown with the template_config.yaml
 config_path = path.abspath(path.join(path.dirname(__file__), 'config.yaml'))
 with open(config_path) as config_file:
     config = yaml.load(config_file, Loader=yaml.Loader)

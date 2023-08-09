@@ -7,6 +7,8 @@ from rfidtools.core import gui_loop
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 
+# Run from command line using the build option (-b, --build) to build an exe.
+# WARNING: Windows will for some reason flag any built .exe using pyInstaller as a virus, this is a false positive, please allow
 parser = argparse.ArgumentParser(
     prog='rfidtools',
     description='Tool for RFID tag production at CIOT.',
@@ -20,6 +22,7 @@ parser.add_argument('-b', '--build-exe',
 args = vars(parser.parse_args())
 BUILD = args['build_exe']
 
+# if build option is not selected then run main GUI loop
 if BUILD is None:
     gui_loop()
 

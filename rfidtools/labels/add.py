@@ -5,6 +5,7 @@ from tkinter import messagebox
 from rfidtools.labels import utils
 
 
+# Parent class for adding labels
 class Add(ttk.LabelFrame):
     def __init__(self, parent, text):
         super().__init__(parent, text=text)
@@ -12,11 +13,13 @@ class Add(ttk.LabelFrame):
         self.type = type(self).__name__.lower()
         self.logs = utils.listlogs(self.type)
 
-    def _update_logs(self):
+    def _update_logs(self) -> None:
+        # refresh logs list
         self.logs = utils.listlogs(self.type)
         self.logChoices.set(self.logs)
 
     def _get_selected_log(self) -> str or None:
+        # get logs, helper method
         try:
             log = self.logs[self.logsListBox.curselection()[0]]
 
@@ -26,7 +29,10 @@ class Add(ttk.LabelFrame):
 
         return log
 
-    def draw(self):
+    def draw(self) -> None:
+        # main draw method, only call once
+        # init all widgets and row/col configs
+
         self.grid(row=0, column=0, sticky='nsew')
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
@@ -60,6 +66,10 @@ class Add(ttk.LabelFrame):
         ttk.Button(self, text='Add Labels', command=self.add_labels).grid(row=4, column=1, pady=5)
 
     def view_log(self) -> None:
+        # view the selected log in a popup preview window
+        # creates new top level windows,
+        # gets log and iterates through it printing all entries
+
         log = self._get_selected_log()
         if log is None:
             return
@@ -82,6 +92,8 @@ class Add(ttk.LabelFrame):
                 ttk.Label(view, text=col).grid(row=i + 1, column=j)
 
     def remove_log(self) -> None:
+        # remove selected log from logs folder, DOES NOT ARCHIVE, UNRECOVERABLE DELETE
+
         log = self._get_selected_log()
         if log is None:
             return
@@ -94,6 +106,8 @@ class Add(ttk.LabelFrame):
                 messagebox.showerror('Error', 'Something went wrong, log could not be removed.')
 
     def add_labels(self, query) -> None:
+        # add labels from selected log
+
         log = self._get_selected_log()
         if log is None:
             return
@@ -118,6 +132,7 @@ class Add(ttk.LabelFrame):
         self._update_logs()
 
 
+# child class for porcelain labels specifically
 class Porcelain(Add):
     def __init__(self, parent) -> None:
         super().__init__(parent, 'Porcelain: Add Labels')
@@ -134,6 +149,7 @@ class Porcelain(Add):
         super().add_labels(INSERT_QUERY)
 
 
+# child class for slab labels specifically
 class Slabs(Add):
     def __init__(self, parent) -> None:
         super().__init__(parent, 'Slabs: Add Labels')
